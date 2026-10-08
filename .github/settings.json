@@ -4,7 +4,7 @@
   },
   "repository": {
     "name": "pyrig-badge",
-    "description": "A pyrig plugin configures a project badge.",
+    "description": "A pyrig plugin that configures a project badge.",
     "homepage": "https://Winipedia.github.io/pyrig-badge",
     "default_branch": "main",
     "delete_branch_on_merge": true,

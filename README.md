@@ -43,6 +43,6 @@
 
 ---
 
-> A pyrig plugin configures a project badge.
+> A pyrig plugin that configures a project badge.
 
 ---
