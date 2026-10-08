@@ -4,6 +4,7 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
+from pyrig.core.strings import read_text_utf8
 from pyrig.rig.configs.base.config_file import ConfigFile
 from pyrig.rig.configs.base.json import JSONDictConfigFile
 from pyrig.rig.tools.packages.manager import PackageManager
@@ -34,7 +35,7 @@ class BadgeConfigFile(JSONDictConfigFile):
             "message": PackageManager.I.project_name(),
             "labelColor": self.safe_load().get("labelColor", "white"),
             "color": self.safe_load().get("color", "white"),
-            "logoSvg": LogoConfigFile.I.read_content(),
+            "logoSvg": read_text_utf8(LogoConfigFile.I.path()),
         }
 
     def parent_path(self) -> Path:

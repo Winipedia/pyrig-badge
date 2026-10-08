@@ -1,5 +1,6 @@
 """Test module."""
 
+from pyrig.core.strings import read_text_utf8
 from pyrig.rig.tools.packages.manager import PackageManager
 
 from pyrig_badge.rig.configs.docs.badge import BadgeConfigFile
@@ -16,7 +17,7 @@ class TestBadgeConfigFile:
             "message": PackageManager.I.project_name(),
             "labelColor": "white",
             "color": "white",
-            "logoSvg": LogoConfigFile.I.read_content(),
+            "logoSvg": read_text_utf8(LogoConfigFile.I.path()),
         }
 
     def test_parent_path(self) -> None:
