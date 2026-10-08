@@ -1,5 +1,7 @@
 # pyrig-badge
 
+[![pyrig-badge](docs/assets/logo.svg)](docs/assets/logo.svg)
+
 <!-- project-status -->
 [![CI](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/health_check.yml?label=CI&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/health_check.yml)
 [![CD](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/release.yml?label=CD&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/release.yml)
@@ -46,3 +48,25 @@
 > A pyrig plugin that configures a project badge.
 
 ---
+
+## Overview
+
+`pyrig-badge` is a [pyrig](https://github.com/Winipedia/pyrig) plugin that
+generates project badge assets and integrates them into the README and
+documentation landing page. See the [documentation](https://Winipedia.github.io/pyrig-badge)
+for asset details and customization.
+
+## Usage
+
+Add the plugin as a development dependency, then regenerate the project
+configuration:
+
+```bash
+uv add pyrig-badge --dev
+uv run pyrig sync
+```
+
+## Documentation
+
+The [documentation site](https://Winipedia.github.io/pyrig-badge) includes
+usage details and the auto-generated [API reference](docs/api.md).

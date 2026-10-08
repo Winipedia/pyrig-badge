@@ -1,1 +1,1 @@
-"""The top-level package for the project."""
+"""Pyrig plugin for generating a project's logo and badge configuration."""

@@ -1,0 +1,7 @@
+{
+  "label": "",
+  "message": "pyrig-badge",
+  "labelColor": "white",
+  "color": "white",
+  "logoSvg": "<svg\n  xmlns=\"http://www.w3.org/2000/svg\"\n  width=\"200\"\n  height=\"200\"\n  viewBox=\"0 0 200 200\"\n>\n  <circle cx=\"100\" cy=\"100\" r=\"95\" fill=\"none\" stroke=\"black\" stroke-width=\"4\" />\n  <text\n    x=\"100\"\n    y=\"100\"\n    fill=\"black\"\n    text-anchor=\"middle\"\n    dominant-baseline=\"middle\"\n  >pyrig-badge</text>\n</svg>\n"
+}

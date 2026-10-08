@@ -1,5 +1,7 @@
 # Home
 
+[![pyrig-badge](assets/logo.svg)](assets/logo.svg)
+
 <!-- project-status -->
 [![CI](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/health_check.yml?label=CI&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/health_check.yml)
 [![CD](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/release.yml?label=CD&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/release.yml)
@@ -46,3 +48,44 @@
 > A pyrig plugin that configures a project badge.
 
 ---
+
+## Overview
+
+`pyrig-badge` is a [pyrig](https://github.com/Winipedia/pyrig) plugin that
+generates a project logo and Shields.io badge data, then adds a link to the logo
+in the project README and this documentation landing page.
+
+## Generated assets
+
+- `docs/assets/logo.svg` contains the project logo. If no logo content is
+  present, the plugin generates a circular SVG with the project name.
+- `docs/assets/badge.json` contains the Shields.io badge configuration,
+  including the project name, badge colors, and embedded logo markup. Its
+  `logoSvg` value is synced from `docs/assets/logo.svg`.
+
+## Customization
+
+You can edit the SVG in `docs/assets/logo.svg` freely. `pyrig sync` preserves
+your SVG content rather than replacing it. To make the logo appear larger,
+increase its `width` and `height` values proportionally.
+
+In `docs/assets/badge.json`, `label`, `labelColor`, and `color` can be edited;
+Pyrig preserves these values when you run `pyrig sync`. The plugin manages
+`message` and `logoSvg`: `message` is set to the project name, and `logoSvg` is
+refreshed from `docs/assets/logo.svg` during sync. Edit the SVG file, rather
+than the embedded `logoSvg` value, to customize the logo.
+
+## Usage
+
+Add the plugin as a development dependency and run `pyrig sync` to regenerate
+the project configuration:
+
+```bash
+uv add pyrig-badge --dev
+uv run pyrig sync
+```
+
+## API Reference
+
+For class- and method-level details, see the [API reference](api.md), generated
+automatically from the source.
