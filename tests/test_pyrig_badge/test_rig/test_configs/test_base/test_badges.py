@@ -36,9 +36,9 @@ class TestBadgesConfigFile:
     def test_logo_content(self) -> None:
         """Test method."""
         assert ConcreteBadgesConfigFile().logo_content() == (
-            "[![pyrig-badge](docs/assets/logo.svg)](docs/assets/logo.svg)"
+            "[![pyrig-badge](docs/assets/banner.svg)](docs/assets/banner.svg)"
         )
 
-    def test_logo_path(self) -> None:
+    def test_image_path(self) -> None:
         """Test method."""
-        assert ConcreteBadgesConfigFile().logo_path() == Path("docs/assets/logo.svg")
+        assert ConcreteBadgesConfigFile().image_path() == Path("docs/assets/banner.svg")

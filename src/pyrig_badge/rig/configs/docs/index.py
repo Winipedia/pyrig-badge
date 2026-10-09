@@ -9,12 +9,12 @@ from pyrig_badge.rig.configs.base.badges import BadgesConfigFile
 
 
 class IndexConfigFile(BadgesConfigFile, BaseIndexConfigFile):
-    """Generate the documentation landing page with its logo and badges."""
+    """Generate the documentation landing page with its banner and badges."""
 
-    def logo_path(self) -> Path:
-        """Return the logo path relative to the documentation source directory.
+    def image_path(self) -> Path:
+        """Return the banner path relative to the documentation source directory.
 
         Returns:
-            Documentation-relative path to the configured logo asset.
+            Documentation-relative path to the configured banner asset.
         """
-        return super().logo_path().relative_to(DocsBuilder.I.docs_dir())
+        return super().image_path().relative_to(DocsBuilder.I.docs_dir())

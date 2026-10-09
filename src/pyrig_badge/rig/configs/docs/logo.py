@@ -28,6 +28,7 @@ class LogoConfigFile(SVGConfigFile):
 
         Returns:
             An empty dictionary; the base SVG config supplies the required
-            root element and namespace, and Pyrig merges existing SVG content.
+            root element, namespace, dimensions, and viewBox, and Pyrig merges
+            existing SVG content.
         """
         return {}

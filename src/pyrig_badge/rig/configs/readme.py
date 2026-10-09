@@ -6,4 +6,4 @@ from pyrig_badge.rig.configs.base.badges import BadgesConfigFile
 
 
 class ReadmeConfigFile(BadgesConfigFile, BaseReadmeConfigFile):
-    """Generate the project README with the configured logo and badges."""
+    """Generate the project README with the configured banner and badges."""

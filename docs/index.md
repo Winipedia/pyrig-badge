@@ -1,6 +1,6 @@
 # Home
 
-[![pyrig-badge](assets/logo.svg)](assets/logo.svg)
+[![pyrig-badge](assets/banner.svg)](assets/banner.svg)
 
 <!-- project-status -->
 [![CI](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/health_check.yml?label=CI&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/health_check.yml)
@@ -52,29 +52,47 @@
 ## Overview
 
 `pyrig-badge` is a [pyrig](https://github.com/Winipedia/pyrig) plugin that
-manages a project logo SVG and Shields.io badge data, then adds a link to the
-logo in the project README and this documentation landing page.
+manages a project logo SVG, a banner embedding the logo, and Shields.io badge
+data, then adds a linked banner image to the project README and this
+documentation landing page.
 
 ## Generated assets
 
-- `docs/assets/logo.svg` contains the project logo. The plugin requires only
-  the standard SVG root element and namespace; a new file starts as an empty
-  SVG for you to customize.
-- `docs/assets/badge.json` contains the Shields.io badge configuration,
+- [`docs/assets/logo.svg`](assets/logo.svg) contains the project logo. The plugin
+  supplies the standard SVG root element and namespace, with default dimensions
+  of `200` by `200` and a viewBox of `0 0 200 200` when those attributes are absent.
+  A new file starts as an empty SVG for you to customize.
+- [`docs/assets/banner.svg`](assets/banner.svg) contains an `<image>` element
+  referencing `logo.svg`. The logo is positioned within the banner's viewBox
+  using its original dimensions, with centering offsets rounded down to integers.
+  The banner has the same default dimensions and viewBox as the logo.
+- [`docs/assets/badge.json`](assets/badge.json) contains the Shields.io badge configuration,
   including the project name, badge colors, and embedded logo markup. Its
   `logoSvg` value is synced from `docs/assets/logo.svg`.
 
 ## Customization
 
-You can add artwork and attributes to `docs/assets/logo.svg`. During `pyrig sync`,
-Pyrig merges the required SVG root and namespace into the file while retaining
-custom SVG content.
+During `pyrig sync`, Pyrig enforces the following:
 
-In `docs/assets/badge.json`, `label`, `labelColor`, and `color` can be edited;
-Pyrig preserves these values when you run `pyrig sync`. The plugin manages
-`message` and `logoSvg`: `message` is set to the project name, and `logoSvg` is
-refreshed from `docs/assets/logo.svg` during sync. Edit the SVG file, rather
-than the embedded `logoSvg` value, to customize the logo.
+- In [`docs/assets/logo.svg`](assets/logo.svg) and
+  [`docs/assets/banner.svg`](assets/banner.svg), the root element is `<svg>` with
+  `xmlns="http://www.w3.org/2000/svg"`. Missing `width`, `height`, and `viewBox`
+  attributes are filled with `200`, `200`, and `0 0 200 200`, respectively;
+  existing values are preserved.
+- In the banner's embedded logo `<image>`, `href` is `logo.svg`, and `width` and
+  `height` match the logo's dimensions. Its `x` and `y` are the banner viewBox's
+  minimum coordinates plus half the remaining width and height, rounded down to
+  integers. The logo is not scaled to fit the banner.
+- In [`docs/assets/badge.json`](assets/badge.json), `message` is the project name
+  and `logoSvg` is the content of `logo.svg`. Missing `label` defaults to an empty
+  string, and missing `labelColor` and `color` default to `white`; existing values
+  are preserved.
+
+Artwork, additional SVG attributes and elements, SVG dimensions and viewBoxes,
+and badge labels and colors can be customized. Banner embedding requires the
+logo's dimensions to be integers without units and the banner viewBox to contain
+exactly four whitespace-separated integers. The logo is positioned but not
+scaled to fit the banner.
 
 ## Usage
 

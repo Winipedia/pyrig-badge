@@ -1,1 +1,1 @@
-"""Pyrig plugin for generating a project's logo and badge configuration."""
+"""Pyrig plugin for generating a project's logo, banner, and badge configuration."""
