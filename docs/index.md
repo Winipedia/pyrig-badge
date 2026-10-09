@@ -52,22 +52,23 @@
 ## Overview
 
 `pyrig-badge` is a [pyrig](https://github.com/Winipedia/pyrig) plugin that
-generates a project logo and Shields.io badge data, then adds a link to the logo
-in the project README and this documentation landing page.
+manages a project logo SVG and Shields.io badge data, then adds a link to the
+logo in the project README and this documentation landing page.
 
 ## Generated assets
 
-- `docs/assets/logo.svg` contains the project logo. If no logo content is
-  present, the plugin generates a circular SVG with the project name.
+- `docs/assets/logo.svg` contains the project logo. The plugin requires only
+  the standard SVG root element and namespace; a new file starts as an empty
+  SVG for you to customize.
 - `docs/assets/badge.json` contains the Shields.io badge configuration,
   including the project name, badge colors, and embedded logo markup. Its
   `logoSvg` value is synced from `docs/assets/logo.svg`.
 
 ## Customization
 
-You can edit the SVG in `docs/assets/logo.svg` freely. `pyrig sync` preserves
-your SVG content rather than replacing it. To make the logo appear larger,
-increase its `width` and `height` values proportionally.
+You can add artwork and attributes to `docs/assets/logo.svg`. During `pyrig sync`,
+Pyrig merges the required SVG root and namespace into the file while retaining
+custom SVG content.
 
 In `docs/assets/badge.json`, `label`, `labelColor`, and `color` can be edited;
 Pyrig preserves these values when you run `pyrig sync`. The plugin manages

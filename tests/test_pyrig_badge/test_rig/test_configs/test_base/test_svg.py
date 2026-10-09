@@ -17,9 +17,9 @@ class ConcreteSVGConfigFile(SVGConfigFile):
         """Return the configuration filename stem."""
         return "example"
 
-    def _configs(self) -> dict[str, Any]:
-        """Return one SVG root element."""
-        return {"svg": {}}
+    def svg_configs(self) -> dict[str, Any]:
+        """Return one child element for the SVG root."""
+        return {"smth": {}}
 
 
 class TestSVGConfigFile:
@@ -28,3 +28,16 @@ class TestSVGConfigFile:
     def test_extension(self) -> None:
         """Test method."""
         assert ConcreteSVGConfigFile().extension() == "svg"
+
+    def test_svg_configs(self) -> None:
+        """Test method."""
+        assert ConcreteSVGConfigFile().svg_configs() == {"smth": {}}
+
+    def test__configs(self) -> None:
+        """Test method."""
+        assert ConcreteSVGConfigFile()._configs() == {  # noqa: SLF001
+            "svg": {
+                "@xmlns": "http://www.w3.org/2000/svg",
+                "smth": {},
+            },
+        }
