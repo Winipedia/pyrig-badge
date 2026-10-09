@@ -52,8 +52,8 @@
 ## Overview
 
 `pyrig-badge` is a [pyrig](https://github.com/Winipedia/pyrig) plugin that
-manages a project logo SVG, a banner embedding the logo, and Shields.io badge
-data, then adds a linked banner image to the project README and this
+manages a project logo SVG, a banner containing the logo inline, and Shields.io
+badge data, then adds a linked banner image to the project README and this
 documentation landing page.
 
 ## Generated assets
@@ -62,10 +62,13 @@ documentation landing page.
   supplies the standard SVG root element and namespace, with default dimensions
   of `200` by `200` and a viewBox of `0 0 200 200` when those attributes are absent.
   A new file starts as an empty SVG for you to customize.
-- [`docs/assets/banner.svg`](assets/banner.svg) contains an `<image>` element
-  referencing `logo.svg`. The logo is positioned within the banner's viewBox
-  using its original dimensions, with centering offsets rounded down to integers.
-  The banner has the same default dimensions and viewBox as the logo.
+- [`docs/assets/banner.svg`](assets/banner.svg) contains the logo's SVG content
+  inlined as a nested `<svg>` element, synced from `docs/assets/logo.svg`, so the
+  banner renders without referencing another file. The logo is positioned within
+  the banner's viewBox using its original dimensions, with centering offsets
+  rounded down to integers.
+  The banner has the same default dimensions and viewBox as the logo, and its
+  viewBox grows to fit a larger logo.
 - [`docs/assets/badge.json`](assets/badge.json) contains the Shields.io badge configuration,
   including the project name, badge colors, and embedded logo markup. Its
   `logoSvg` value is synced from `docs/assets/logo.svg`.
@@ -77,22 +80,27 @@ During `pyrig sync`, Pyrig enforces the following:
 - In [`docs/assets/logo.svg`](assets/logo.svg) and
   [`docs/assets/banner.svg`](assets/banner.svg), the root element is `<svg>` with
   `xmlns="http://www.w3.org/2000/svg"`. Missing `width`, `height`, and `viewBox`
-  attributes are filled with `200`, `200`, and `0 0 200 200`, respectively;
-  existing values are preserved.
-- In the banner's embedded logo `<image>`, `href` is `logo.svg`, and `width` and
-  `height` match the logo's dimensions. Its `x` and `y` are the banner viewBox's
-  minimum coordinates plus half the remaining width and height, rounded down to
-  integers. The logo is not scaled to fit the banner.
+  attributes are filled with default values, but existing logo values are preserved.
+- In the banner's nested logo `<svg>`, the logo's attributes and elements are
+  mirrored, and `width`, `height`, and `viewBox` match the logo's.
+  Its `x` and `y` are the banner viewBox's minimum coordinates plus half
+  the remaining width and height, rounded down to integers; these override any
+  `x` or `y` set on the logo itself. The logo is drawn at its own size in the
+  banner's viewBox units.
+  Sync adds and updates content but never removes it, so elements or attributes
+  deleted from the logo must also be deleted from the banner's nested `<svg>`.
+- The banner's viewBox width and height are raised to at least the logo's width
+  and height, so the logo is never cropped. The viewBox's minimum coordinates
+  and the banner's `width` and `height` are kept; the viewBox scales to them.
 - In [`docs/assets/badge.json`](assets/badge.json), `message` is the project name
   and `logoSvg` is the content of `logo.svg`. Missing `label` defaults to an empty
   string, and missing `labelColor` and `color` default to `white`; existing values
   are preserved.
 
 Artwork, additional SVG attributes and elements, SVG dimensions and viewBoxes,
-and badge labels and colors can be customized. Banner embedding requires the
-logo's dimensions to be integers without units and the banner viewBox to contain
-exactly four whitespace-separated integers. The logo is positioned but not
-scaled to fit the banner.
+and badge labels and colors can be customized. Inserting the logo into the banner
+requires the logo's dimensions to be integers without units and the banner
+viewBox to contain exactly four whitespace-separated integers.
 
 ## Usage
 

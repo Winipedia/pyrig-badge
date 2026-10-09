@@ -6,11 +6,11 @@ from typing import Any
 
 from pyrig_badge.rig.configs.base.svg import SVGConfigFile
 
-TEST_VIEW_BOX_ATTRIBUTES = (10, 20, 300, 400)
+TEST_VIEW_BOX_ATTRIBUTES = ("10", "20", "300", "400")
 
 
 class ConcreteSVGConfigFile(SVGConfigFile):
-    """SVG configuration for SVG defaults and embedding tests."""
+    """SVG configuration for SVG defaults and insertion tests."""
 
     def parent_path(self) -> Path:
         """Return the configuration directory."""
@@ -26,7 +26,7 @@ class ConcreteSVGConfigFile(SVGConfigFile):
 
 
 class ConcreteSmallSVGConfigFile(SVGConfigFile):
-    """SVG configuration with fixed, smaller dimensions for embedding tests."""
+    """SVG configuration with fixed, smaller dimensions for insertion tests."""
 
     def parent_path(self) -> Path:
         """Return the configuration directory."""
@@ -54,7 +54,7 @@ class ConcreteOffsetSVGConfigFile(ConcreteSVGConfigFile):
 
     def view_box(self) -> str:
         """Return a viewBox with distinct coordinates and dimensions."""
-        return " ".join(str(value) for value in TEST_VIEW_BOX_ATTRIBUTES)
+        return " ".join(TEST_VIEW_BOX_ATTRIBUTES)
 
 
 class TestSVGConfigFile:
@@ -80,17 +80,39 @@ class TestSVGConfigFile:
             },
         }
 
-    def test_embed_svg(self) -> None:
+    def test_insert_svg(self, tmp_path: Path) -> None:
         """Test method."""
-        assert ConcreteSVGConfigFile().embed_svg(ConcreteSmallSVGConfigFile) == {
-            "image": {
-                "@href": "small.svg",
-                "@x": "75",
-                "@y": "60",
-                "@width": "50",
-                "@height": "80",
-            },
-        }
+        with chdir(tmp_path):
+            assert ConcreteSVGConfigFile().insert_svg(ConcreteSmallSVGConfigFile) == {
+                "svg": {
+                    "@x": "75",
+                    "@y": "60",
+                    "@width": "50",
+                    "@height": "80",
+                    "@viewBox": "0 0 200 200",
+                },
+            }
+
+            small = ConcreteSmallSVGConfigFile()
+            small.path().parent.mkdir()
+            small.path().write_text(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5 8">'
+                '<circle r="1"/></svg>',
+                encoding="utf-8",
+            )
+            ConcreteSmallSVGConfigFile.load.cache_clear()
+            assert ConcreteSVGConfigFile().insert_svg(ConcreteSmallSVGConfigFile) == {
+                "svg": {
+                    "@xmlns": "http://www.w3.org/2000/svg",
+                    "@viewBox": "0 0 5 8",
+                    "circle": {"@r": "1"},
+                    "@x": "75",
+                    "@y": "60",
+                    "@width": "50",
+                    "@height": "80",
+                },
+            }
+            ConcreteSmallSVGConfigFile.load.cache_clear()
 
     def test_width(self) -> None:
         """Test method."""

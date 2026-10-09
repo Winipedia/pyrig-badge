@@ -35,36 +35,45 @@ class SVGConfigFile(XMLConfigFile):
             },
         }
 
-    def embed_svg(self, svg: "type[SVGConfigFile]") -> dict[str, Any]:
-        """Return an `<image>` element positioned within this SVG's viewBox.
+    def insert_svg(self, svg: "type[SVGConfigFile]") -> dict[str, Any]:
+        """Return `svg`'s content as a nested `<svg>` element.
 
-        Position uses the viewBox origin and half the remaining space, rounded
-        down to an integer. Embedded dimensions must be integer strings and
-        are used unchanged as this SVG's user-space dimensions.
+        The nested element mirrors the loaded root of `svg`, including its
+        attributes and children, so this SVG is self-contained and changes to
+        `svg` propagate on sync. Its `width`, `height`, and `viewBox` are
+        `svg`'s values, and its `x` and `y` place it at this SVG's viewBox
+        origin plus half the remaining space, rounded down to integers; these
+        five attributes override any same-named attributes of `svg`. The
+        inserted dimensions must be integer strings and are used unchanged as
+        this SVG's user-space dimensions, so `svg` is not scaled to fit.
 
         Args:
-            svg: The `SVGConfigFile` subclass to embed, referenced by path
-                relative to this file's parent directory. Its path must be
-                beneath that directory.
+            svg: The `SVGConfigFile` subclass whose content is inserted. If its
+                file does not exist, only the generated attributes are set.
 
         Returns:
-            A dictionary representing an `<image>` element sized to `svg`'s
-            dimensions and positioned within this SVG's viewBox.
+            A dictionary representing a nested `<svg>` element containing
+            `svg`'s content, sized to its dimensions and positioned within
+            this SVG's viewBox.
 
         Raises:
-            ValueError: If the embedded path is not beneath this file's parent,
-                the embedded dimensions are not integer strings, or the
-                viewBox is not four whitespace-separated integer values.
+            ValueError: If the inserted dimensions are not integer strings or
+                the viewBox is not four whitespace-separated integer values.
         """
-        x = self.view_box_x() + ((self.view_box_width() - int(svg.I.width())) // 2)
-        y = self.view_box_y() + ((self.view_box_height() - int(svg.I.height())) // 2)
+        x = int(self.view_box_x()) + (
+            (int(self.view_box_width()) - int(svg.I.width())) // 2
+        )
+        y = int(self.view_box_y()) + (
+            (int(self.view_box_height()) - int(svg.I.height())) // 2
+        )
         return {
-            "image": {
-                "@href": svg.I.path().relative_to(self.parent_path()).as_posix(),
+            "svg": {
+                **svg.I.safe_load_svg(),
                 "@x": str(x),
                 "@y": str(y),
                 "@width": svg.I.width(),
                 "@height": svg.I.height(),
+                "@viewBox": svg.I.view_box(),
             },
         }
 
@@ -76,39 +85,38 @@ class SVGConfigFile(XMLConfigFile):
         """Return the stored SVG height, or `"200"` if absent."""
         return self.safe_load_svg().get("@height", "200")
 
-    def view_box_x(self) -> int:
+    def view_box_x(self) -> str:
         """Return the minimum x-coordinate of the viewBox."""
         x, _, _, _ = self.view_box_attributes()
         return x
 
-    def view_box_y(self) -> int:
+    def view_box_y(self) -> str:
         """Return the minimum y-coordinate of the viewBox."""
         _, y, _, _ = self.view_box_attributes()
         return y
 
-    def view_box_height(self) -> int:
+    def view_box_height(self) -> str:
         """Return the height of the viewBox."""
         _, _, _, height = self.view_box_attributes()
         return height
 
-    def view_box_width(self) -> int:
+    def view_box_width(self) -> str:
         """Return the width of the viewBox."""
         _, _, width, _ = self.view_box_attributes()
         return width
 
-    def view_box_attributes(self) -> tuple[int, int, int, int]:
-        """Parse the viewBox as four whitespace-separated integers.
+    def view_box_attributes(self) -> tuple[str, str, str, str]:
+        """Split the viewBox into its four whitespace-separated values.
 
         Returns:
-            Minimum x, minimum y, width, and height, in that order.
+            Minimum x, minimum y, width, and height, in that order, as strings.
 
         Raises:
             ValueError: If the viewBox does not contain exactly four
-                whitespace-separated integer values.
+                whitespace-separated values.
         """
-        view_box = self.view_box().split()
-        x, y, width, height = view_box
-        return int(x), int(y), int(width), int(height)
+        x, y, width, height = self.view_box().split()
+        return x, y, width, height
 
     def view_box(self) -> str:
         """Return the stored viewBox, or `"0 0 200 200"` if absent."""
