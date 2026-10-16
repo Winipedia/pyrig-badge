@@ -1,6 +1,6 @@
 [project]
 name = "pyrig-badge"
-version = "0.4.13"
+version = "0.4.14"
 description = "A pyrig plugin that configures a project badge."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -122,7 +122,7 @@ select = [
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
-[tool.ryl.rules]
+[tool.ryl.lint.rules]
 ALL = "enable"
 key-ordering = "disable"
 
