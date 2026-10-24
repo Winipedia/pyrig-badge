@@ -9,54 +9,6 @@ from pyrig_badge.rig.configs.base.svg import SVGConfigFile
 TEST_VIEW_BOX_ATTRIBUTES = ("10", "20", "300", "400")
 
 
-class ConcreteSVGConfigFile(SVGConfigFile):
-    """SVG configuration for SVG defaults and insertion tests."""
-
-    def parent_path(self) -> Path:
-        """Return the configuration directory."""
-        return Path("configs")
-
-    def stem(self) -> str:
-        """Return the configuration filename stem."""
-        return "example"
-
-    def svg_configs(self) -> dict[str, Any]:
-        """Return one child element for the SVG root."""
-        return {"smth": {}}
-
-
-class ConcreteSmallSVGConfigFile(SVGConfigFile):
-    """SVG configuration with fixed, smaller dimensions for insertion tests."""
-
-    def parent_path(self) -> Path:
-        """Return the configuration directory."""
-        return Path("configs")
-
-    def stem(self) -> str:
-        """Return the configuration filename stem."""
-        return "small"
-
-    def svg_configs(self) -> dict[str, Any]:
-        """Return no additional SVG elements or attributes."""
-        return {}
-
-    def width(self) -> str:
-        """Return a fixed width smaller than the default."""
-        return "50"
-
-    def height(self) -> str:
-        """Return a fixed height smaller than the default."""
-        return "80"
-
-
-class ConcreteOffsetSVGConfigFile(ConcreteSVGConfigFile):
-    """SVG configuration with a non-default viewBox for parsing tests."""
-
-    def view_box(self) -> str:
-        """Return a viewBox with distinct coordinates and dimensions."""
-        return " ".join(TEST_VIEW_BOX_ATTRIBUTES)
-
-
 class TestSVGConfigFile:
     """Test class."""
 
@@ -170,3 +122,51 @@ class TestSVGConfigFile:
                 "@xmlns": "http://www.w3.org/2000/svg",
                 "@width": "100",
             }
+
+
+class ConcreteSVGConfigFile(SVGConfigFile):
+    """SVG configuration for SVG defaults and insertion tests."""
+
+    def parent_path(self) -> Path:
+        """Return the configuration directory."""
+        return Path("configs")
+
+    def stem(self) -> str:
+        """Return the configuration filename stem."""
+        return "example"
+
+    def svg_configs(self) -> dict[str, Any]:
+        """Return one child element for the SVG root."""
+        return {"smth": {}}
+
+
+class ConcreteSmallSVGConfigFile(SVGConfigFile):
+    """SVG configuration with fixed, smaller dimensions for insertion tests."""
+
+    def parent_path(self) -> Path:
+        """Return the configuration directory."""
+        return Path("configs")
+
+    def stem(self) -> str:
+        """Return the configuration filename stem."""
+        return "small"
+
+    def svg_configs(self) -> dict[str, Any]:
+        """Return no additional SVG elements or attributes."""
+        return {}
+
+    def width(self) -> str:
+        """Return a fixed width smaller than the default."""
+        return "50"
+
+    def height(self) -> str:
+        """Return a fixed height smaller than the default."""
+        return "80"
+
+
+class ConcreteOffsetSVGConfigFile(ConcreteSVGConfigFile):
+    """SVG configuration with a non-default viewBox for parsing tests."""
+
+    def view_box(self) -> str:
+        """Return a viewBox with distinct coordinates and dimensions."""
+        return " ".join(TEST_VIEW_BOX_ATTRIBUTES)

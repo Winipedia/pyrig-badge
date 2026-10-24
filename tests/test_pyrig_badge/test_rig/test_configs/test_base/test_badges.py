@@ -7,22 +7,6 @@ from pyrig_badge.rig.configs.base.badges import (
 )
 
 
-class ConcreteBadgesConfigFile(BadgeMarkdownConfigFile):
-    """Test class."""
-
-    def heading(self) -> str:
-        """Test method."""
-        return "Test project"
-
-    def parent_path(self) -> Path:
-        """Test method."""
-        return Path()
-
-    def stem(self) -> str:
-        """Test method."""
-        return "test"
-
-
 class TestBadgesConfigFile:
     """Test class."""
 
@@ -42,3 +26,19 @@ class TestBadgesConfigFile:
     def test_image_path(self) -> None:
         """Test method."""
         assert ConcreteBadgesConfigFile().image_path() == Path("docs/assets/banner.svg")
+
+
+class ConcreteBadgesConfigFile(BadgeMarkdownConfigFile):
+    """Test class."""
+
+    def heading(self) -> str:
+        """Test method."""
+        return "Test project"
+
+    def parent_path(self) -> Path:
+        """Test method."""
+        return Path()
+
+    def stem(self) -> str:
+        """Test method."""
+        return "test"
