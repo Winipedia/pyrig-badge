@@ -2,17 +2,13 @@
 
 from contextlib import chdir
 from pathlib import Path
-from typing import Any
+from typing import Any, override
 
 from pyrig_badge.rig.configs.base.xml import XMLConfigFile
 
 
 class TestXMLConfigFile:
     """Test XML parsing, serialization, and the inherited config lifecycle."""
-
-    def test_extension(self) -> None:
-        """Use XML as the default extension."""
-        assert ConcreteXMLConfigFile().extension() == "xml"
 
     def test__dump(self, tmp_path: Path) -> None:
         """Test method."""
@@ -45,18 +41,25 @@ class TestXMLConfigFile:
             )
             assert config._load() == config.configs()  # noqa: SLF001
 
+    def test_extension(self) -> None:
+        """Use XML as the default extension."""
+        assert ConcreteXMLConfigFile().extension() == "xml"
+
 
 class ConcreteXMLConfigFile(XMLConfigFile):
     """XML configuration for isolated lifecycle tests."""
 
+    @override
     def parent_path(self) -> Path:
         """Return the configuration directory."""
         return Path("configs")
 
+    @override
     def stem(self) -> str:
         """Return the configuration filename stem."""
         return "example"
 
+    @override
     def _configs(self) -> dict[str, Any]:
         """Return attributes, repeated elements, and escaped text."""
         return {

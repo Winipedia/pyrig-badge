@@ -1,7 +1,7 @@
 """Base class for managing dictionary-backed SVG configuration files."""
 
 from abc import abstractmethod
-from typing import Any
+from typing import Any, override
 
 from pyrig_badge.rig.configs.base.xml import XMLConfigFile
 
@@ -20,10 +20,12 @@ class SVGConfigFile(XMLConfigFile):
             A dictionary representing the SVG configuration.
         """
 
+    @override
     def extension(self) -> str:
         """Return the SVG file extension without a leading dot."""
         return "svg"
 
+    @override
     def _configs(self) -> dict[str, Any]:
         return {
             "svg": {
@@ -77,13 +79,19 @@ class SVGConfigFile(XMLConfigFile):
             },
         }
 
-    def width(self) -> str:
-        """Return the stored SVG width, or `"200"` if absent."""
-        return self.safe_load_svg().get("@width", "200")
-
     def height(self) -> str:
         """Return the stored SVG height, or `"200"` if absent."""
         return self.safe_load_svg().get("@height", "200")
+
+    def view_box_height(self) -> str:
+        """Return the height of the viewBox."""
+        _, _, _, height = self.view_box_attributes()
+        return height
+
+    def view_box_width(self) -> str:
+        """Return the width of the viewBox."""
+        _, _, width, _ = self.view_box_attributes()
+        return width
 
     def view_box_x(self) -> str:
         """Return the minimum x-coordinate of the viewBox."""
@@ -95,15 +103,9 @@ class SVGConfigFile(XMLConfigFile):
         _, y, _, _ = self.view_box_attributes()
         return y
 
-    def view_box_height(self) -> str:
-        """Return the height of the viewBox."""
-        _, _, _, height = self.view_box_attributes()
-        return height
-
-    def view_box_width(self) -> str:
-        """Return the width of the viewBox."""
-        _, _, width, _ = self.view_box_attributes()
-        return width
+    def width(self) -> str:
+        """Return the stored SVG width, or `"200"` if absent."""
+        return self.safe_load_svg().get("@width", "200")
 
     def view_box_attributes(self) -> tuple[str, str, str, str]:
         """Split the viewBox into its four whitespace-separated values.

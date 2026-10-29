@@ -2,7 +2,7 @@
 
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Any
+from typing import Any, override
 
 from pyrig.core.strings import read_text_utf8
 from pyrig.rig.configs.base.config_file import ConfigFile
@@ -15,6 +15,7 @@ from pyrig_badge.rig.configs.docs.logo import LogoConfigFile
 class BadgeConfigFile(JSONDictConfigFile):
     """Generate project badge data and embed the configured logo SVG."""
 
+    @override
     def dependencies(self) -> Iterable[type[ConfigFile[Any]]]:
         """Return the logo asset required to construct this badge.
 
@@ -23,6 +24,21 @@ class BadgeConfigFile(JSONDictConfigFile):
         """
         return (*super().dependencies(), LogoConfigFile)
 
+    @override
+    def parent_path(self) -> Path:
+        """Return the directory containing the logo and badge assets.
+
+        Returns:
+            Parent directory used by the logo configuration file.
+        """
+        return LogoConfigFile.I.parent_path()
+
+    @override
+    def stem(self) -> str:
+        """Return the filename stem `"badge"`."""
+        return "badge"
+
+    @override
     def _configs(self) -> dict[str, Any]:
         """Build badge data using optional values from the existing JSON file.
 
@@ -37,15 +53,3 @@ class BadgeConfigFile(JSONDictConfigFile):
             "color": self.safe_load().get("color", "white"),
             "logoSvg": read_text_utf8(LogoConfigFile.I.path()),
         }
-
-    def parent_path(self) -> Path:
-        """Return the directory containing the logo and badge assets.
-
-        Returns:
-            Parent directory used by the logo configuration file.
-        """
-        return LogoConfigFile.I.parent_path()
-
-    def stem(self) -> str:
-        """Return the filename stem `"badge"`."""
-        return "badge"

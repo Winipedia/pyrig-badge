@@ -1,6 +1,7 @@
 """Badge-augmented Markdown configuration base class."""
 
 from pathlib import Path
+from typing import override
 
 from pyrig.rig.configs.base.badges import BadgesConfigFile as BaseBadgesConfigFile
 from pyrig.rig.tools.packages.manager import PackageManager
@@ -11,6 +12,7 @@ from pyrig_badge.rig.configs.docs.banner import BannerConfigFile
 class BadgesConfigFile(BaseBadgesConfigFile):
     """Add the generated project banner before the base class's badge groups."""
 
+    @override
     def badges_content(self) -> str:
         """Return the project banner followed by the generated badge groups.
 

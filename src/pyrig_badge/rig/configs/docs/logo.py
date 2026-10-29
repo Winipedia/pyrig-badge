@@ -1,7 +1,7 @@
 """Configuration manager for the generated documentation logo."""
 
 from pathlib import Path
-from typing import Any
+from typing import Any, override
 
 from pyrig.rig.tools.docs.builder import DocsBuilder
 
@@ -11,6 +11,7 @@ from pyrig_badge.rig.configs.base.svg import SVGConfigFile
 class LogoConfigFile(SVGConfigFile):
     """Manage the project logo SVG under the documentation assets directory."""
 
+    @override
     def parent_path(self) -> Path:
         """Return the documentation assets directory.
 
@@ -19,10 +20,12 @@ class LogoConfigFile(SVGConfigFile):
         """
         return DocsBuilder.I.docs_dir() / "assets"
 
+    @override
     def stem(self) -> str:
         """Return the logo filename stem."""
         return "logo"
 
+    @override
     def svg_configs(self) -> dict[str, Any]:
         """Return no additional SVG elements or attributes.
 

@@ -2,7 +2,7 @@
 
 from collections.abc import Iterable
 from pathlib import Path
-from typing import Any
+from typing import Any, override
 
 from pyrig.rig.configs.base.config_file import ConfigFile
 
@@ -13,6 +13,7 @@ from pyrig_badge.rig.configs.docs.logo import LogoConfigFile
 class BannerConfigFile(SVGConfigFile):
     """Manage the banner SVG, centering the logo within a viewBox that fits it."""
 
+    @override
     def dependencies(self) -> Iterable[type[ConfigFile[Any]]]:
         """Return the logo config file as a dependency.
 
@@ -21,6 +22,7 @@ class BannerConfigFile(SVGConfigFile):
         """
         return (*super().dependencies(), LogoConfigFile)
 
+    @override
     def parent_path(self) -> Path:
         """Return the documentation assets directory.
 
@@ -29,10 +31,24 @@ class BannerConfigFile(SVGConfigFile):
         """
         return LogoConfigFile.I.parent_path()
 
+    @override
     def stem(self) -> str:
         """Return the banner filename stem."""
         return "banner"
 
+    @override
+    def svg_configs(self) -> dict[str, Any]:
+        """Return the logo's SVG content inserted within the banner's viewBox.
+
+        Centering offsets are rounded down to integers by `insert_svg`.
+
+        Returns:
+            A dictionary representing a nested `<svg>` element that mirrors
+            the logo's content.
+        """
+        return self.insert_svg(LogoConfigFile)
+
+    @override
     def view_box(self) -> str:
         """Return the stored viewBox, enlarged to fit the logo if needed.
 
@@ -54,14 +70,3 @@ class BannerConfigFile(SVGConfigFile):
         width = max(int(width), int(LogoConfigFile.I.width()))
         height = max(int(height), int(LogoConfigFile.I.height()))
         return f"{x} {y} {width} {height}"
-
-    def svg_configs(self) -> dict[str, Any]:
-        """Return the logo's SVG content inserted within the banner's viewBox.
-
-        Centering offsets are rounded down to integers by `insert_svg`.
-
-        Returns:
-            A dictionary representing a nested `<svg>` element that mirrors
-            the logo's content.
-        """
-        return self.insert_svg(LogoConfigFile)

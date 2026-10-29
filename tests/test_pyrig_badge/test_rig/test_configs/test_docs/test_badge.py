@@ -20,6 +20,10 @@ class TestBadgeConfigFile:
             "logoSvg": read_text_utf8(LogoConfigFile.I.path()),
         }
 
+    def test_dependencies(self) -> None:
+        """Test method."""
+        assert tuple(BadgeConfigFile.I.dependencies()) == (LogoConfigFile,)
+
     def test_parent_path(self) -> None:
         """Test method."""
         assert BadgeConfigFile.I.parent_path() == LogoConfigFile.I.parent_path()
@@ -27,7 +31,3 @@ class TestBadgeConfigFile:
     def test_stem(self) -> None:
         """Test method."""
         assert BadgeConfigFile.I.stem() == "badge"
-
-    def test_dependencies(self) -> None:
-        """Test method."""
-        assert tuple(BadgeConfigFile.I.dependencies()) == (LogoConfigFile,)

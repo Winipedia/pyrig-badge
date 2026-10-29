@@ -1,6 +1,6 @@
 """Base class for managing dictionary-backed XML configuration files."""
 
-from typing import Any
+from typing import Any, override
 
 import xmltodict
 from pyrig.core.strings import read_text_utf8, write_text_utf8
@@ -16,6 +16,12 @@ class XMLConfigFile(DictConfigFile):
     This dictionary representation does not preserve mixed-content ordering.
     """
 
+    @override
+    def extension(self) -> str:
+        """Return the XML file extension without a leading dot."""
+        return "xml"
+
+    @override
     def _dump(self, configs: dict[str, Any]) -> None:
         """Write XML as UTF-8 with a declaration and default indentation."""
         content = xmltodict.unparse(
@@ -24,10 +30,7 @@ class XMLConfigFile(DictConfigFile):
         )
         write_text_utf8(self.path(), f"{content}\n")
 
+    @override
     def _load(self) -> dict[str, Any]:
         """Parse XML without expanding entities."""
         return xmltodict.parse(read_text_utf8(self.path()), disable_entities=True)
-
-    def extension(self) -> str:
-        """Return the XML file extension without a leading dot."""
-        return "xml"
