@@ -3,7 +3,7 @@
 [![pyrig-badge](assets/banner.svg)](assets/banner.svg)
 
 <!-- project-status -->
-[![CI](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/health_check.yml?label=CI&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/health_check.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/health-check.yml?label=CI&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/health-check.yml)
 [![CD](https://img.shields.io/github/actions/workflow/status/Winipedia/pyrig-badge/release.yml?label=CD&logo=github)](https://github.com/Winipedia/pyrig-badge/actions/workflows/release.yml)
 [![ProjectTester](https://codecov.io/gh/Winipedia/pyrig-badge/branch/main/graph/badge.svg)](https://codecov.io/gh/Winipedia/pyrig-badge)
 <!-- code-quality -->
