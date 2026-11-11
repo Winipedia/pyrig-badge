@@ -1,6 +1,6 @@
 [project]
 name = "pyrig-badge"
-version = "0.5.77"
+version = "0.5.78"
 description = "A pyrig plugin that configures a project badge."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -27,7 +27,7 @@ classifiers = [
   "Typing :: Typed",
 ]
 dependencies = [
-  "pyrig>=19.2.0",
+  "pyrig>=19.29.0",
   "xmltodict>=1.0.4",
 ]
 
