@@ -4,9 +4,49 @@ from contextlib import chdir
 from pathlib import Path
 from typing import Any, override
 
+from hypothesis import given
+from hypothesis import strategies as st
+
 from pyrig_badge.rig.configs.base.svg import SVGConfigFile
 
 TEST_VIEW_BOX_ATTRIBUTES = ("10", "20", "300", "400")
+
+
+@given(
+    x=st.integers(-1000, 1000),
+    y=st.integers(-1000, 1000),
+    width=st.integers(0, 1000),
+    height=st.integers(0, 1000),
+)
+def test_insert_svg_centers_in_generated_view_boxes(
+    x: int,
+    y: int,
+    width: int,
+    height: int,
+) -> None:
+    """Center the inserted SVG relative to the viewBox, including odd differences."""
+
+    class GeneratedSVGConfigFile(ConcreteSVGConfigFile):
+        @override
+        def view_box(self) -> str:
+            return f"{x} {y} {width} {height}"
+
+    class SmallSVGConfigFile(ConcreteSmallSVGConfigFile):
+        @override
+        def safe_load_svg(self) -> dict[str, Any]:
+            return {}
+
+    result = GeneratedSVGConfigFile().insert_svg(SmallSVGConfigFile)
+
+    assert result == {
+        "svg": {
+            "@x": str(x + (width - 50) // 2),
+            "@y": str(y + (height - 80) // 2),
+            "@width": "50",
+            "@height": "80",
+            "@viewBox": "0 0 200 200",
+        },
+    }
 
 
 class TestSVGConfigFile:
