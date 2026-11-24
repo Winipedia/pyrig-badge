@@ -1,7 +1,7 @@
 """Base class for managing dictionary-backed SVG configuration files."""
 
 from abc import abstractmethod
-from typing import Any, override
+from typing import Any, cast, override
 
 from pyrig_badge.rig.configs.base.xml import XMLConfigFile
 
@@ -81,7 +81,7 @@ class SVGConfigFile(XMLConfigFile):
 
     def height(self) -> str:
         """Return the stored SVG height, or `"200"` if absent."""
-        return self.safe_load_svg().get("@height", "200")
+        return cast("str", self.safe_load_svg().get("@height", "200"))
 
     def view_box_height(self) -> str:
         """Return the height of the viewBox."""
@@ -105,7 +105,7 @@ class SVGConfigFile(XMLConfigFile):
 
     def width(self) -> str:
         """Return the stored SVG width, or `"200"` if absent."""
-        return self.safe_load_svg().get("@width", "200")
+        return cast("str", self.safe_load_svg().get("@width", "200"))
 
     def view_box_attributes(self) -> tuple[str, str, str, str]:
         """Split the viewBox into its four whitespace-separated values.
@@ -122,7 +122,7 @@ class SVGConfigFile(XMLConfigFile):
 
     def view_box(self) -> str:
         """Return the stored viewBox, or `"0 0 200 200"` if absent."""
-        return self.safe_load_svg().get("@viewBox", "0 0 200 200")
+        return cast("str", self.safe_load_svg().get("@viewBox", "0 0 200 200"))
 
     def safe_load_svg(self) -> dict[str, Any]:
         """Return the loaded SVG root, or an empty dict if the file/root is absent."""
